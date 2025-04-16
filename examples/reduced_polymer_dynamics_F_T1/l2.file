@@ -1,0 +1,58 @@
+/home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T/outputs/main123_HD2/F1_62_T10
+[2025-04-07 10:38:32,916][__main__][INFO] - Loading dataset F1_62_T10...
+[2025-04-07 10:39:15,839][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-04-07 10:39:15,840][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+Dataset({
+    features: ['t', 'x', 'args'],
+    num_rows: 976
+})
+[2025-04-07 10:39:16,487][__main__][INFO] - Building HD2 ...
+2025-04-07 10:39:16.518065: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver's CUDA version is 12.7 which is older than the PTX compiler version (12.8.61). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+[2025-04-07 10:39:18,280][__main__][INFO] - Training HD2 for 2000 epochs...
+[2025-04-07 10:39:26,353][__main__][INFO] - epoch=00000, train_loss=20.231030, test_loss=18.421874, lr_scale=1.0000
+[2025-04-07 10:54:34,959][__main__][INFO] - epoch=00200, train_loss=17.972483, test_loss=17.972245, lr_scale=0.4000
+[2025-04-07 11:09:43,661][__main__][INFO] - epoch=00400, train_loss=17.971857, test_loss=17.971707, lr_scale=0.1600
+[2025-04-07 11:24:51,971][__main__][INFO] - epoch=00600, train_loss=17.971606, test_loss=17.971507, lr_scale=0.0640
+[2025-04-07 11:40:01,397][__main__][INFO] - epoch=00800, train_loss=17.971475, test_loss=17.971464, lr_scale=0.0102
+[2025-04-07 11:55:10,263][__main__][INFO] - epoch=01000, train_loss=17.971448, test_loss=17.971448, lr_scale=0.0041
+[2025-04-07 12:10:18,574][__main__][INFO] - epoch=01200, train_loss=17.971437, test_loss=17.971443, lr_scale=0.0016
+[2025-04-07 12:25:31,147][__main__][INFO] - epoch=01400, train_loss=17.971433, test_loss=17.971441, lr_scale=0.0007
+[2025-04-07 12:40:44,150][__main__][INFO] - epoch=01600, train_loss=17.971431, test_loss=17.971440, lr_scale=0.0003
+[2025-04-07 12:55:55,295][__main__][INFO] - epoch=01800, train_loss=17.971430, test_loss=17.971440, lr_scale=0.0001
+/home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T/outputs/main123_HD2/F1_62_T5
+[2025-04-07 13:10:59,921][__main__][INFO] - Loading dataset F1_62_T5...
+Dataset({
+    features: ['t', 'x', 'args'],
+    num_rows: 976
+})
+[2025-04-07 13:11:42,800][__main__][INFO] - Building HD2 ...
+[2025-04-07 13:11:42,816][__main__][INFO] - Training HD2 for 2000 epochs...
+[2025-04-07 13:11:50,097][__main__][INFO] - epoch=00000, train_loss=18.247514, test_loss=17.651721, lr_scale=1.0000
+[2025-04-07 13:26:59,862][__main__][INFO] - epoch=00200, train_loss=17.152646, test_loss=17.151170, lr_scale=0.4000
+[2025-04-07 13:42:08,627][__main__][INFO] - epoch=00400, train_loss=17.152272, test_loss=17.150613, lr_scale=0.1600
+[2025-04-07 13:57:17,862][__main__][INFO] - epoch=00600, train_loss=17.152133, test_loss=17.150488, lr_scale=0.0640
+[2025-04-07 14:12:37,395][__main__][INFO] - epoch=00800, train_loss=17.152081, test_loss=17.150416, lr_scale=0.0256
+[2025-04-07 14:27:54,311][__main__][INFO] - epoch=01000, train_loss=17.152056, test_loss=17.150372, lr_scale=0.0041
+[2025-04-07 14:43:13,876][__main__][INFO] - epoch=01200, train_loss=17.152051, test_loss=17.150372, lr_scale=0.0016
+[2025-04-07 14:58:33,147][__main__][INFO] - epoch=01400, train_loss=17.152049, test_loss=17.150373, lr_scale=0.0007
+[2025-04-07 15:13:53,018][__main__][INFO] - epoch=01600, train_loss=17.152048, test_loss=17.150373, lr_scale=0.0003
+[2025-04-07 15:29:12,847][__main__][INFO] - epoch=01800, train_loss=17.152048, test_loss=17.150374, lr_scale=0.0001
+/home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T/outputs/main123_HD2/F1_62_T2_25
+[2025-04-07 15:44:28,419][__main__][INFO] - Loading dataset F1_62_T2_25...
+Dataset({
+    features: ['t', 'x', 'args'],
+    num_rows: 976
+})
+[2025-04-07 15:45:25,638][__main__][INFO] - Building HD2 ...
+[2025-04-07 15:45:25,660][__main__][INFO] - Training HD2 for 2000 epochs...
+[2025-04-07 15:45:34,247][__main__][INFO] - epoch=00000, train_loss=17.450384, test_loss=16.751617, lr_scale=1.0000
+[2025-04-07 16:00:53,373][__main__][INFO] - epoch=00200, train_loss=16.179211, test_loss=16.182753, lr_scale=0.4000
+[2025-04-07 16:16:13,170][__main__][INFO] - epoch=00400, train_loss=16.178832, test_loss=16.182512, lr_scale=0.1600
+[2025-04-07 16:31:33,696][__main__][INFO] - epoch=00600, train_loss=16.178669, test_loss=16.182384, lr_scale=0.0640
+[2025-04-07 16:46:46,234][__main__][INFO] - epoch=00800, train_loss=16.178610, test_loss=16.182377, lr_scale=0.0256
+[2025-04-07 17:01:56,554][__main__][INFO] - epoch=01000, train_loss=16.178580, test_loss=16.182355, lr_scale=0.0041
+[2025-04-07 17:17:05,489][__main__][INFO] - epoch=01200, train_loss=16.178574, test_loss=16.182345, lr_scale=0.0016
+[2025-04-07 17:32:13,908][__main__][INFO] - epoch=01400, train_loss=16.178572, test_loss=16.182341, lr_scale=0.0007
+[2025-04-07 17:47:31,069][__main__][INFO] - epoch=01600, train_loss=16.178571, test_loss=16.182339, lr_scale=0.0003
+[2025-04-07 18:02:50,321][__main__][INFO] - epoch=01800, train_loss=16.178570, test_loss=16.182339, lr_scale=0.0001
+[2025-04-07 18:18:04,462][__main__][INFO] - Saving output to /home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T/outputs/main123_HD2
