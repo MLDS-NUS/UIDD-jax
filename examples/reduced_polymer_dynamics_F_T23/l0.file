@@ -1,0 +1,22 @@
+/home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T23/outputs/4main0_HD2/F23_10_T0_25
+[2025-04-08 14:12:45,382][__main__][INFO] - Loading dataset F23_10_T0_25...
+[2025-04-08 14:12:54,814][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2025-04-08 14:12:54,815][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+Dataset({
+    features: ['t', 'x', 'args'],
+    num_rows: 976
+})
+[2025-04-08 14:12:54,940][__main__][INFO] - Building HD2 ...
+2025-04-08 14:12:54.971008: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver's CUDA version is 12.7 which is older than the PTX compiler version (12.8.61). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+[2025-04-08 14:12:57,175][__main__][INFO] - Training HD2 for 2000 epochs...
+[2025-04-08 14:13:02,315][__main__][INFO] - epoch=00000, train_loss=2187.902004, test_loss=74.619797, lr_scale=1.0000
+[2025-04-08 14:18:23,559][__main__][INFO] - epoch=00200, train_loss=12.531771, test_loss=12.532644, lr_scale=1.0000
+[2025-04-08 14:23:45,310][__main__][INFO] - epoch=00400, train_loss=12.512310, test_loss=12.519998, lr_scale=1.0000
+[2025-04-08 14:30:14,972][__main__][INFO] - epoch=00600, train_loss=12.501030, test_loss=12.520496, lr_scale=1.0000
+[2025-04-08 14:35:43,307][__main__][INFO] - epoch=00800, train_loss=12.488476, test_loss=12.495174, lr_scale=1.0000
+[2025-04-08 14:41:07,807][__main__][INFO] - epoch=01000, train_loss=12.471311, test_loss=12.479507, lr_scale=1.0000
+[2025-04-08 14:46:31,449][__main__][INFO] - epoch=01200, train_loss=12.470628, test_loss=12.498763, lr_scale=1.0000
+[2025-04-08 14:51:56,934][__main__][INFO] - epoch=01400, train_loss=12.513463, test_loss=12.665681, lr_scale=1.0000
+[2025-04-08 14:57:24,707][__main__][INFO] - epoch=01600, train_loss=12.404563, test_loss=12.418879, lr_scale=0.4000
+[2025-04-08 15:02:49,176][__main__][INFO] - epoch=01800, train_loss=12.404811, test_loss=12.467848, lr_scale=0.4000
+[2025-04-08 15:08:07,481][__main__][INFO] - Saving output to /home/aiqing/Onsager/Onsager/Onsager/examples/reduced_polymer_dynamics_F_T23/outputs/4main0_HD2
