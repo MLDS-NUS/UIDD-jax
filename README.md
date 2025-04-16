@@ -11,6 +11,8 @@ In the `onsagernet/new_dynamics.py` module, two variants of OnsagerNet are imple
 
 In practice we use **OnsagerNetHD2** with scaled potential function (In the previous version of **PotentialResMLP**, a scale parameter was included and multiplied with the output)
 
+The function to build the network can be found in `examples/utils_reduced_polymer.py`; it's named **build_OnsagerNetHD2_scale**".
+
 ---
 
 
