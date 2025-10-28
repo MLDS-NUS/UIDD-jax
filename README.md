@@ -1,6 +1,6 @@
 # I-OnsagerNet: Identifiable learning of dissipative dynamics
 
-This repository contains an implementation of OnsagerNet, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dynamics from data, particularly for complex physical systems. The framework is based on the (standard) OnsagerNet (https://github.com/MLDS-NUS/onsagernet-jax).
+This repository contains an implementation of I-OnsagerNet, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dynamics from data. The framework is based on the (standard) OnsagerNet (https://github.com/MLDS-NUS/onsagernet-jax).
 
 ## Requirements
 - Python 3.8+
@@ -25,9 +25,10 @@ conda env create -f environment.yml
 
 ## Code of I-OnsagerNet
 
+The dynamics of I-OnsagerNet is of the form:
 $$ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t) \right]dt + \sigma(Z_t) dW(t)$$
  
-
+We provide two versions of the I-OnsagerNet implementation:
 | Version | Path | Input Matrix | Computation |
 |--------|------|---------------|-------------|
 | **1** | `onsagernet/dynamics.py/OnsagerNetHD` | $W$, $V$, Dissipation matrix $M $ | Compute $\sigma = \sqrt{2M}$ |
@@ -36,6 +37,7 @@ $$ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\c
 > Version 1 takes the **dissipation matrix** as input and computes its square root (Cholesky decomposition) to obtain the diffusion matrix.  
 > Version 2 takes the **diffusion matrix** as input and computes the dissipation matrix by multiplying it with its transpose.
 
+**Note:** The default version is **Version 2**.
  
  
 
@@ -75,16 +77,16 @@ The framework can be applied to other complex dynamical systems:
    - Modify parameters in `config/main_reduced_polymer.yaml`
    - Adjust network architectures, training epochs, learning rates, etc.
 
-3. **Analysis**:
-   - Results are saved in timestamped directories under `outputs/`
-   - Use `plot_traj.ipynb` to verify the learned dynamics
-   - Use `plot_var.ipynb` to compute the variations of the learned energy functions
-   - Use `plot_potential.ipynb` to verify the learned potential
-   - Use `barrier_height.ipynb` to compute barrier height
-   - Use `results.ipynb` to compute the global EPR
-   - Use `plot_localEPR.ipynb` to verify the local EPR
-   - Use `polymer_exp_val/EPR_30V.ipynb` and `polymer_exp_val/EPR_60V.ipynb` to valid by experimental data 
 
+3. **Analysis**
+   - Results are saved in timestamped directories under `outputs/`.
+   - Use `plot_traj.ipynb` to visualize the learned dynamics.
+   - Use `plot_var.ipynb` to compute variations in the learned energy functions.
+   - Use `plot_potential.ipynb` to verify the learned potential landscape.
+   - Use `barrier_height.ipynb` to compute the energy barrier height.
+   - Use `results.ipynb` to evaluate the global entropy production rate (EPR).
+   - Use `plot_localEPR.ipynb` to analyze the local EPR distribution.
+   - Use `polymer_exp_val/EPR_30V.ipynb` and `polymer_exp_val/EPR_60V.ipynb` to validate results against experimental data.
 
 
 4.  Dimensionality Reduction (This step is separate from network training, and the Huggingface data has already undergone dimensionality reduction)
