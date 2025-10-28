@@ -1,6 +1,6 @@
-# I-OnsagerNet: Learning Identifiable Dynamics
+# I-OnsagerNet: Identifiable learning of dissipative dynamics
 
-This repository contains an implementation of OnsagerNet, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dynamics from data, particularly for complex physical systems. The framework is based on the generalized Onsager principle and can learn stochastic dynamics that preserve fundamental physical structures.
+This repository contains an implementation of OnsagerNet, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dynamics from data, particularly for complex physical systems. The framework is based on the (standard) OnsagerNet (https://github.com/MLDS-NUS/onsagernet-jax).
 
 ## Requirements
 - Python 3.8+
@@ -16,19 +16,25 @@ conda env create -f environment.yml
 ```
 
 ## Key Features
-
-### 1. I-OnsagerNet Architecture
+ 
 - **Identifiable Learning**: key components are **Identifiable**
 - **Stable Dynamics**: Guarantees stability through symmetric positive semi-definite dissipation and anti-symmetric conservation matrices
 - **Flexible Components**: Modular design with customizable potential, Hamiltonian(conservation), and diffusion/dissipation functions
 - **Invariant Distributaion**: The learned potential corresponds to the stationary density of the system
 - **Entropy Production Rate**: The drift admits an equivalent decomposition into time-reversible and time-irreversible components. This property directly enables computation of the EPR for the learned system
 
+### **Code of I-OnsagerNet**
 
-### 3. Training Framework
-- **Maximum Likelihood Estimation**: Efficient parameter learning using MLE
-- **Closure-Aware Training**: Specialized losses for closure modeling (reconstruction and comparison losses)
-- **Flexible Training**: Supports joint training of all components or frozen transformation layers
+| Version | Path | Input Matrix | Computation |
+|--------|------|---------------|-------------|
+| **1** | `onsagernet/dynamics.py/OnsagerNetHD` | Dissipation matrix \( M \) | Compute \( \sigma = \sqrt{M} \) |
+| **2** | `onsagernet/dynamics.py/OnsagerNetHD2` | Diffusion matrix \( \sigma \) | Compute \( M = \sigma \sigma^\top \) |
+
+> Version 1 takes the **dissipation matrix** as input and computes its square root to obtain the diffusion matrix.  
+> Version 2 takes the **diffusion matrix** as input and computes the dissipation matrix by multiplying it with its transpose.
+
+ 
+ 
 
 ## Main Applications
 
@@ -51,6 +57,8 @@ The framework can be applied to other complex dynamical systems:
 - General stochastic differential equations (SDEs)
 
 ## How to Use
+**NOTE: We recommend customizing the GPU memory settings and output directories to match your environment.**
+
 
 ### Running the Polymer Dynamics Example
 1. **Training**:
@@ -97,8 +105,9 @@ The framework can be applied to other complex dynamical systems:
    - Modify parameters in `config/main.yaml`
    - Adjust network architectures, training epochs, learning rates, etc.
 
-3. **Analysis**:
-    - `SGLD-1Kaczmarz/results.ipynb`
+3. **Analysis** 
+the results are found in the notebook:
+    - `SGLD-1Kaczmarz/results.ipynb` 
     - `SGLD-2ICA/results.ipynb`
 
 
@@ -138,8 +147,9 @@ The framework can be applied to other complex dynamical systems:
 ```
 
 ## References
-1. Aiqing Zhu, Beatrice W. Soh, Grigorios A. Pavliotis, and Qianxiao Li, Identifiable learning of dissipative dynamics
-2. Xiaoli Chen et al. Constructing custom thermodynamics using deep learning. Nature Computational Science 4, 66–85 (2024).
-3. Haijun Yu,  Xinyuan Tian, Weinan E and Qianxiao Li, OnsagerNet: Learning stable and interpretable dynamics using a generalized Onsager principle. Phys. Rev. Fluids 6, 114402 (2021).
+- https://github.com/MLDS-NUS/onsagernet-jax
+- Aiqing Zhu, Beatrice W. Soh, Grigorios A. Pavliotis, and Qianxiao Li, Identifiable learning of dissipative dynamics
+- Xiaoli Chen et al. Constructing custom thermodynamics using deep learning. Nature Computational Science 4, 66–85 (2024).
+- Haijun Yu,  Xinyuan Tian, Weinan E and Qianxiao Li, OnsagerNet: Learning stable and interpretable dynamics using a generalized Onsager principle. Phys. Rev. Fluids 6, 114402 (2021).
 
 

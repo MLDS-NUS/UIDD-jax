@@ -79,7 +79,7 @@ def main(config: DictConfig) -> None:
     runtime_dir = hydra.core.hydra_config.HydraConfig.get().runtime.output_dir
     logger = logging.getLogger(__name__) 
     data_set_key_list=["F23_10_T1", "F16_20_T1", "F11_60_T1", 
-                    #    "F4_63_T1", "F3_93_T1", "F2_78_T1", "F2_31_T1", "F1_62_T1"
+                       "F4_63_T1", "F3_93_T1", "F2_78_T1", "F2_31_T1", "F1_62_T1"
                   ]
     def scale_number(F):
         return 2**(F/3)/3

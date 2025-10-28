@@ -429,9 +429,7 @@ class OnsagerNetHD(SDE):
         - $H : \mathbb{R}^{d} \to \mathbb{R}^{d-1}$. H e^{-V} is the Hamiltonian decomposition of \gamma e^{-V}.
         - $J_d$ is a $D\times D$ matrix with only two non-zero elements: 
             a $1$ at the position $(d, d+1)$ and a $-1$ at the position $(d+1, d)$.
-        
-        Notice that the main difference with `OnsagerNet` is that the
-        diffusion matrix is now given by a (positive semi-definite) square root of the dissipation matrix.
+  
 
         Args:
             potential (eqx.Module): potential function $V$
@@ -566,9 +564,7 @@ class OnsagerNetHD2(SDE):
         - $H : \mathbb{R}^{d} \to \mathbb{R}^{d-1}$. H e^{-V} is the Hamiltonian decomposition of \gamma e^{-V}.
         - $J_d$ is a $D\times D$ matrix with only two non-zero elements: 
             a $1$ at the position $(d, d+1)$ and a $-1$ at the position $(d+1, d)$.
-        
-        Notice that the main difference with `OnsagerNet` is that the
-        diffusion matrix is now given by a (positive semi-definite) square root of the dissipation matrix.
+  
 
         Args:
             potential (eqx.Module): potential function $V$
