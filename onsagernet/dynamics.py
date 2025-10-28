@@ -407,17 +407,13 @@ class OnsagerNetHD(SDE):
         r"""Stochastic OnsagerNet model based on Helmholtz Decomposition.
 
         This is a modified version of the Stochastic OnsagerNet model.
-        Let $X(t) \in \mathbb{R}^d$. This model is defined by the SDE
+        Let $Z_t \in \mathbb{R}^d$. This model is defined by the SDE
         $$
-            dX(t) = -
-            \left[
-                -M(x) \nabla V(x) + \epsilon \nabla\cdot M(x) + \gamma(x)
-            \right] dt
-            + \sqrt{2 \epsilon} [M(x(t)]^\frac{1}{2}dW(t)
-        $$
-
-        $$
-            \gamma = \sum_{d=1}^{D-1} J_d \nabla H_d  - \sum_{d=1}^{D-1}H_d J_d \nabla V.
+        dZ_t = -
+        \left[
+                [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t)
+        \right]dt
+        + \sqrt{2} [M(Z_t)]^\frac{1}{2}dW(t)
         $$
 
         where
@@ -538,23 +534,14 @@ class OnsagerNetHD2(SDE):
         """Second way for Stochastic OnsagerNet model based on Helmholtz Decomposition.
 
         This is a modified version of the Stochastic OnsagerNet model.
-        Let $X(t) \in \mathbb{R}^d$. This model is defined by the SDE
+        Let $Z_t \in \mathbb{R}^d$. This model is defined by the SDE
         $$
-            dX(t) = -
-            \left[
-                -M(x) \nabla V(x) + \epsilon \nabla\cdot M(x) + \gamma(x)
-            \right] dt
-            + \sqrt{2 \epsilon} Diff(x) dW(t)
+        dZ_t = -
+        \left[
+                [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t)
+        \right]dt
+        + Diff(Z_t) dW(t)
         $$
-        
-        $$
-            M(x) = Diff(x) Diff(x)^T
-        $$
-
-        $$
-            \gamma = \sum_{d=1}^{D-1} J_d \nabla H_d  - \sum_{d=1}^{D-1}H_d J_d \nabla V.
-        $$
-
         where
 
         - $Diff: \mathbb{R}^{d} \to \mathbb{R}^{d\times d}$ is the diffusion part,

@@ -23,14 +23,23 @@ conda env create -f environment.yml
 - **Invariant Distributaion**: The learned potential corresponds to the stationary density of the system
 - **Entropy Production Rate**: The drift admits an equivalent decomposition into time-reversible and time-irreversible components. This property directly enables computation of the EPR for the learned system
 
-### **Code of I-OnsagerNet**
+## Code of I-OnsagerNet
+
+$$
+   dZ_t = -
+   \left[
+         [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t)
+  \right]dt
+   + \sigma(Z_t) dW(t)
+$$
+ 
 
 | Version | Path | Input Matrix | Computation |
 |--------|------|---------------|-------------|
-| **1** | `onsagernet/dynamics.py/OnsagerNetHD` | Dissipation matrix \( M \) | Compute \( \sigma = \sqrt{M} \) |
-| **2** | `onsagernet/dynamics.py/OnsagerNetHD2` | Diffusion matrix \( \sigma \) | Compute \( M = \sigma \sigma^\top \) |
+| **1** | `onsagernet/dynamics.py/OnsagerNetHD` | $W$, $V$, Dissipation matrix $M $ | Compute $\sigma = \sqrt{2M}$ |
+| **2** | `onsagernet/dynamics.py/OnsagerNetHD2` |  $W$, $V$, Diffusion matrix $\sigma$ | Compute $M = \sigma \sigma^\top/2$ |
 
-> Version 1 takes the **dissipation matrix** as input and computes its square root to obtain the diffusion matrix.  
+> Version 1 takes the **dissipation matrix** as input and computes its square root (Cholesky decomposition) to obtain the diffusion matrix.  
 > Version 2 takes the **diffusion matrix** as input and computes the dissipation matrix by multiplying it with its transpose.
 
  
