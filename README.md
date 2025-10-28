@@ -26,7 +26,8 @@ conda env create -f environment.yml
 ## Code of I-OnsagerNet
 
 The dynamics of I-OnsagerNet is of the form:
-$$ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t) \right]dt + \sigma(Z_t) dW(t)$$
+
+$ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t) \right]dt + \sigma(Z_t) dW(t).$
  
 We provide two versions of the I-OnsagerNet implementation:
 | Version | Path | Input Matrix | Computation |
