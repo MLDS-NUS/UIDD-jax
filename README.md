@@ -25,13 +25,7 @@ conda env create -f environment.yml
 
 ## Code of I-OnsagerNet
 
-$$
-   dZ_t = -
-   \left[
-         [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t)
-  \right]dt
-   + \sigma(Z_t) dW(t)
-$$
+$$ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t) \right]dt + \sigma(Z_t) dW(t)$$
  
 
 | Version | Path | Input Matrix | Computation |
