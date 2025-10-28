@@ -1,0 +1,69 @@
+# Default config file for the linear case
+
+temperature: 1
+dt: 0.01
+dim: 2 # state dimension
+Model_name: HD2
+data:
+  seed: 123 # random seed
+  init_scale: 2.0 # scale of the initial condition
+  var: 1
+  t0: 0.0
+  t1: 1
+  num_runs: 9000 # number of training trajectories
+  num_runs_test: 1000 # number of test trajectories
+
+model:
+  seed: 0
+  potential:
+    alpha: 0.01 # regularization strength
+    units: # layer sizes
+      - 64
+      - 32
+    activation: "recu"
+  hamiltonian:
+    # units:
+    #   - 128
+    # activation: "tanh"
+    units:
+      - 32
+      - 16
+    activation: "recu"
+    is_bounded: false
+  dissipation:
+    alpha: 0.1
+    units:
+      - 32
+      - 16
+    activation: "recu"
+    is_bounded: false # whether to have the output bounded (via tanh activation)
+  conservation:
+    units:
+      - 32
+      - 16
+    activation: "recu"
+    is_bounded: false
+  
+
+train:
+  num_epochs: 5000
+  batch_size: 50000 # each batch will be [batch_size, train_traj_len, dim], so use a small batch size if train_traj_len is large
+  train_traj_len: 2 # can shrink the length of the training trajectories for better GPU performance
+  checkpoint_every: 200 # number of epochs to check-point the model
+  print_every: 200 # number of epochs to print the loss
+  opt: # optimiser options
+    learning_rate: 1e-3
+  rop: # reduce on plateau options
+    patience: 20
+    cooldown: 20
+    factor: 0.4
+    rtol: 1e-4
+    min_scale: 1e-4
+    accumulation_size: 2000
+
+hydra:
+  run:
+    dir: ./outputs/tanhlinear${model.seed}_${Model_name}_lambda${data.var}
+  sweep:
+    dir: ./outputs/multirun/${now:%Y_%m_%d-%H_%M_%S}
+    subdir: ${hydra.job.num}

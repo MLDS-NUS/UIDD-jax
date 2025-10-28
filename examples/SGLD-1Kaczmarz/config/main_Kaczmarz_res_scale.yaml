@@ -1,0 +1,61 @@
+# Default config file for the linear case
+
+temperature: 1
+dt: 0.005
+dim: 12 # state dimension
+
+Model_name: HD2
+
+
+data:
+  generate: True
+  batch_size: 1
+  lr: 0.01
+
+
+model: 
+  potential:
+    activation: "tanh" # shifted ReQU activation
+    alpha: 0.01 # regularization strength
+    units: # layer sizes
+      - 128
+    n_pot: 32
+  hamiltonian:
+    units:
+      - 128
+      - 128
+    activation: "tanh"
+    is_bounded: false
+  diffusion:
+    alpha: 0.001 
+    units:
+      - 32
+      - 32
+    activation: "tanh"
+
+train:
+  num_epochs: 500
+  batch_size: 100000 # each batch will be [batch_size, train_traj_len, dim], so use a small batch size if train_traj_len is large
+  train_traj_len: null # can shrink the length of the training trajectories for better GPU performance
+  checkpoint_every: 20 # number of epochs to check-point the model
+  print_every: 1 # number of epochs to print the loss
+  opt: # optimiser options
+    learning_rate: 1e-3
+  rop: # reduce on plateau options
+    patience: 20
+    cooldown: 20
+    factor: 0.4
+    rtol: 1e-4
+    min_scale: 1e-4
+    accumulation_size: 2000
+ 
+hydra:
+  run:
+    dir: ./outputs/main_50scale${data.batch_size}_${data.lr}${Model_name}
+  sweep:
+    dir: ./outputs/multirun/main${model.seed}_${Model_name}
+    # dir: ./outputs/multirun/${now:%Y_%m_%d-%H_%M_%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: False  # 禁用目录切换，保证参数串行执行
+

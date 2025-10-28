@@ -92,7 +92,7 @@ from jax.tree_util import tree_map
 
 from tqdm import tqdm
 
-from ._losses import MLELoss, ReconLoss, CompareLoss
+from ._losses import MLELoss, MLELoss2, ReconLoss, CompareLoss
 
 # ------------------------- Typing imports ------------------------- #
 
@@ -301,6 +301,9 @@ class SDETrainer(ABC):
                         filter_spec=filter_spec,
                         )
                     test_losses.append(test_loss)
+                    # x000 = jnp.array([7.82606284, 7.95040229, 6.27184057, 3.87593735, 3.82678438, 3.55390638,
+                    #   2.50887362, 5.14281966, 2.88223371, 4.04380187, 5.91991938, 6.45877829])/5-1
+                    # , net(x0)={model.potential(x000, args=[1])}
                     logger.info(
                         f"epoch={epoch:05d}, train_loss={step_loss:.6f}, test_loss={test_loss:.6f}, lr_scale={lr_scale:.4f}"
                     )
@@ -391,6 +394,33 @@ class MLETrainer(SDETrainer):
         model = eqx.combine(diff_model, static_model)
         return MLELoss()(model, t, x, args)
 
+class MLE2Trainer(SDETrainer):
+
+    @eqx.filter_jit
+    def loss_func(
+        self,
+        diff_model: DynamicModel,
+        static_model: DynamicModel,
+        t: ArrayLike,
+        x: ArrayLike,
+        args: ArrayLike,
+    ) -> float:
+        """The MLE loss function.
+
+        See [`MLELoss`](./_losses.html#MLELoss) for more details.
+
+        Args:
+            diff_model (DynamicModel): the trainable part of the model
+            static_model (DynamicModel): the static part of the model
+            t (ArrayLike): time
+            x (ArrayLike): state
+            args (ArrayLike): additional arguments or parameters.
+
+        Returns:
+            float: the computed loss
+        """
+        model = eqx.combine(diff_model, static_model)
+        return MLELoss2()(model, t, x, args)
 
 class ClosureMLETrainer(MLETrainer):
 

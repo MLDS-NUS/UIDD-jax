@@ -118,11 +118,10 @@ class MLELoss(Loss):
 
         Returns:
             float: loss value
-        """
+        """ 
         drift = model.drift(t, x, args)
         diffusion = model.diffusion(t, x, args)
-        # dt = t_plus - t
-        dt=0.0005
+        dt = t_plus - t 
         data = (x_plus - x) / dt
         mean = drift
         cov = (1 / dt) * diffusion @ diffusion.T
@@ -134,13 +133,69 @@ class MLELoss(Loss):
 
         return MLE_Loss
     
-        # d = x.shape[0]
-        # cov_inv = jnp.linalg.inv(cov)
-        # cov_det = jnp.linalg.det(cov)
-        # norm_const =- 0.5 * jnp.log(cov_det)
-        # diff = data - mean
-        # manual_logpdf_value =norm_const  - 0.5 * diff.T @ cov_inv @ diff
-        # return -manual_logpdf_value
+class MLELoss2(Loss):
+    r"""Computes the maximum likelihood estimation loss for the SDE
+
+    The loss is the negative log-likelihood of the data given the model.
+    By an Euler-Maruyama discretization of the SDE
+    $$
+        dX(t) = f(t, X(t), \theta) dt + g(t, X(t), \theta) dW(t),
+    $$
+    which gives
+    $$
+        Mean(t + \Delta t) = Mean(t) + f(t, (Mean(t)+f(t, Mean(t), \theta) \Delta t/2), \theta) \Delta t,
+    $$
+    $$
+        Cov(t + \Delta t) = g(t, X(t), \theta) g(t, X(t), \theta)^T \Delta t.
+    $$
+    Thus, the negative log-likelihood $X(t+\Delta t)$ is given by
+    $$
+        -\log p(X(t + \Delta t) | X(t), \theta) = \frac{1}{2} \log(2\pi)
+        + \frac{1}{2} \log(\text{det}(\Sigma))
+        + \frac{1}{2} (X(t + \Delta t) - X(t))^T \Sigma^{-1} (X(t + \Delta t) - X(t)).
+    $$
+    We will use `scipy.stats.multivariate_normal` to compute the log-likelihood.
+    """
+
+    def _process_data_arrs(self, t: ArrayLike, x: ArrayLike, args: ArrayLike) -> Array:
+        return t[:, :-1, :], t[:, 1:, :], x[:, :-1, :], x[:, 1:, :], args[:, :-1, :]
+
+    def compute_sample_loss(
+        self,
+        model: SDE,
+        t: ArrayLike,
+        t_plus: ArrayLike,
+        x: ArrayLike,
+        x_plus: ArrayLike,
+        args: ArrayLike,
+    ) -> float:
+        """Computes the loss for a single sample.
+
+        Args:
+            model (SDE): the model to be trained
+            t (ArrayLike): time
+            t_plus (ArrayLike): time shifted by one step
+            x (ArrayLike): state
+            x_plus (ArrayLike): state shifted by one step
+            args (ArrayLike): arguments for the current time step
+
+        Returns:
+            float: loss value
+        """ 
+        # drift = model.drift(t, x, args)
+        diffusion = model.diffusion(t, x, args)
+        dt = t_plus - t 
+        data = (x_plus - x) / dt
+        x_ = x + model.drift(t, x, args) * dt / 2
+        mean = model.drift(t, x_, args) 
+        cov = (1 / dt) * diffusion @ diffusion.T
+        
+        MLE_Loss = -multivariate_normal.logpdf(data, mean, cov)
+
+        if hasattr(model, 'regu') and model.regu:
+            MLE_Loss = MLE_Loss + model.regularization(x)
+
+        return MLE_Loss
 
 
 class ReconLoss(Loss):
