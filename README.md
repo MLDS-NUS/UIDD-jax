@@ -1,6 +1,6 @@
-# I-OnsagerNet: Identifiable learning of dissipative dynamics
+# Identifiable learning of dissipative dynamics
 
-This repository contains an implementation of I-OnsagerNet, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dynamics from data. The framework is based on the (standard) OnsagerNet (https://github.com/MLDS-NUS/onsagernet-jax).
+This repository contains an implementation of UIDD, a deep learning framework for learning not only stable and interpretable, but also **Identifiable** dissipative dynamics from data. 
 
 ## Requirements
 - Python 3.8+
@@ -23,13 +23,13 @@ conda env create -f environment.yml
 - **Invariant Distributaion**: The learned potential corresponds to the stationary density of the system
 - **Entropy Production Rate**: The drift admits an equivalent decomposition into time-reversible and time-irreversible components. This property directly enables computation of the EPR for the learned system
 
-## Code of I-OnsagerNet
+## Code of UIDD
 
-The dynamics of I-OnsagerNet is of the form:
+The dynamics of UIDD is of the form:
 
 $ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cdot W(Z_t) \right]dt + \sigma(Z_t) dW(t).$
  
-We provide two versions of the I-OnsagerNet implementation:
+We provide two versions of the UIDD implementation:
 | Version | Path | Input Matrix | Computation |
 |--------|------|---------------|-------------|
 | **1** | `onsagernet/dynamics.py/OnsagerNetHD` | $W$, $V$, Dissipation matrix $M $ | Compute $\sigma = \sqrt{2M}$ |
@@ -139,7 +139,7 @@ the results are found in the notebook:
 ## Repository Structure
 ```
 ├── onsagernet/              # Core framework modules
-│   ├── dynamics.py          # SDE models and I-OnsagerNet
+│   ├── dynamics.py          # SDE models and UIDD
 │   ├── models.py            # Neural network components
 │   ├── transformations.py   # Dimensionality reduction tools
 │   ├── trainers.py          # Training routines
@@ -155,7 +155,5 @@ the results are found in the notebook:
 ## References
 - https://github.com/MLDS-NUS/onsagernet-jax
 - Aiqing Zhu, Beatrice W. Soh, Grigorios A. Pavliotis, and Qianxiao Li, Identifiable learning of dissipative dynamics
-- Xiaoli Chen et al. Constructing custom thermodynamics using deep learning. Nature Computational Science 4, 66–85 (2024).
-- Haijun Yu,  Xinyuan Tian, Weinan E and Qianxiao Li, OnsagerNet: Learning stable and interpretable dynamics using a generalized Onsager principle. Phys. Rev. Fluids 6, 114402 (2021).
 
 
