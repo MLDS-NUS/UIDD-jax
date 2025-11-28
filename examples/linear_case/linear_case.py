@@ -20,11 +20,11 @@ from omegaconf import DictConfig
 from datasets import Dataset, Features, Array2D
 
 sys.path.append('../..')
-from onsagernet.dynamics import OnsagerNetFD, OnsagerNet,  OnsagerNetHD2
-from onsagernet.models import PotentialMLP, DissipationMatrixMLP, ConservationMatrixMLP
-from onsagernet.trainers import MLETrainer
-from onsagernet.models import PotentialMLP_scale, DiffusionConstant
-from onsagernet.models import MLP
+from UIDD.dynamics import OnsagerNetFD, OnsagerNet, UIDD2
+from UIDD.models import PotentialMLP, DissipationMatrixMLP, ConservationMatrixMLP
+from UIDD.trainers import MLETrainer
+from UIDD.models import PotentialMLP_scale, DiffusionConstant
+from UIDD.models import MLP
 # ------------------------- Typing imports ------------------------- #
 
 from jax import Array
@@ -137,14 +137,14 @@ def get_filter_spec(model) -> Any:
     )
     return filter_spec
 
-def build_OnsagerNetHD2(config: DictConfig) -> OnsagerNetHD2:
-    """Build the OnsagerNetHD2 model to learn the target dynamics
+def build_UIDD2(config: DictConfig) -> UIDD2:
+    """Build the UIDD2 model to learn the target dynamics
 
     Args:
         config (DictConfig): configuration object
 
     Returns:
-        OnsagerNetHD2: OnsagerNetHD2 model
+        UIDD2: UIDD2 model
     """
 
     init_keys = jax.random.PRNGKey(config.model.seed)
@@ -169,7 +169,7 @@ def build_OnsagerNetHD2(config: DictConfig) -> OnsagerNetHD2:
         units=config.model.hamiltonian.units + [config.dim-1],
         activation=config.model.hamiltonian.activation,
     )
-    return OnsagerNetHD2(config.dim, potential, Diffusion, Hamiltonian) 
+    return UIDD2(config.dim, potential, Diffusion, Hamiltonian) 
 
 def build_OnsagerNet(config: DictConfig) -> OnsagerNet:
     """Build the OnsagerNet model to learn the target dynamics
@@ -244,7 +244,7 @@ def train_model(config: DictConfig) -> None:
         model = build_OnsagerNet(config)
         filter_spec=None
     elif config.Model_name == 'HD2':
-        model = build_OnsagerNetHD2(config)
+        model = build_UIDD2(config)
         filter_spec = get_filter_spec(model)
     else:
         raise ValueError("wrong model")

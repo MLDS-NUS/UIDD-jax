@@ -32,8 +32,8 @@ $ dZ_t = - \left[ [M(Z_t)+W(Z_t)] \nabla V(Z_t) + \nabla\cdot M(Z_t) + \nabla\cd
 We provide two versions of the UIDD implementation:
 | Version | Path | Input Matrix | Computation |
 |--------|------|---------------|-------------|
-| **1** | `onsagernet/dynamics.py/OnsagerNetHD` | $W$, $V$, Dissipation matrix $M $ | Compute $\sigma = \sqrt{2M}$ |
-| **2** | `onsagernet/dynamics.py/OnsagerNetHD2` |  $W$, $V$, Diffusion matrix $\sigma$ | Compute $M = \sigma \sigma^\top/2$ |
+| **1** | `UIDD/dynamics.py/UIDD1` | $W$, $V$, Dissipation matrix $M $ | Compute $\sigma = \sqrt{2M}$ |
+| **2** | `UIDD/dynamics.py/UIDD2` |  $W$, $V$, Diffusion matrix $\sigma$ | Compute $M = \sigma \sigma^\top/2$ |
 
 > Version 1 takes the **dissipation matrix** as input and computes its square root (Cholesky decomposition) to obtain the diffusion matrix.  
 > Version 2 takes the **diffusion matrix** as input and computes the dissipation matrix by multiplying it with its transpose.
@@ -120,14 +120,14 @@ the results are found in the notebook:
 ### Custom Applications
 1. **Define Components**:
    - Create custom potential, dissipation, conservation, and diffusion functions
-   - Use provided base classes in `onsagernet/models.py`
+   - Use provided base classes in `UIDD/models.py`
 
 2. **Set Up Dynamics**:
-   - Assemble components using `OnsagerNetHD` or `OnsagerNetHD2` class in `onsagernet/dynamics.py`
+   - Assemble components using `UIDD1` or `UIDD2` class in `UIDD/dynamics.py`
    - For reduced dynamics, use `ReducedSDE` with appropriate encoders/decoders
 
 3. **Training**:
-   - Use trainers from `onsagernet/trainers.py`
+   - Use trainers from `UIDD/trainers.py`
    - Implement custom loss functions if needed
 
 
@@ -138,7 +138,7 @@ the results are found in the notebook:
 
 ## Repository Structure
 ```
-├── onsagernet/              # Core framework modules
+├── UIDD/              # Core framework modules
 │   ├── dynamics.py          # SDE models and UIDD
 │   ├── models.py            # Neural network components
 │   ├── transformations.py   # Dimensionality reduction tools

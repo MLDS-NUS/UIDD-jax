@@ -15,8 +15,8 @@ import hydra
 import logging
 from omegaconf import DictConfig, OmegaConf
 
-from onsagernet.trainers import MLETrainer
-from utils_reduced_polymer import load_data, build_OnsagerNet, build_OnsagerNetHD2_scale
+from UIDD.trainers import MLETrainer
+from utils_reduced_polymer import load_data, build_OnsagerNet, build_UIDD2_scale
  
 from logging import Logger
 
@@ -50,7 +50,7 @@ def train_model(config: DictConfig, logger: Logger= None, dataset_name: str = "F
         model = build_OnsagerNet(config)
         filter_spec=None
     elif config.Model_name == 'HD2':
-        model = build_OnsagerNetHD2_scale(config, scale)
+        model = build_UIDD2_scale(config, scale)
         filter_spec = get_filter_spec(model)
     else:
         raise ValueError("wrong model")

@@ -13,23 +13,23 @@ after which the reduced dynamics can be trained.
 In this case the reduced space consist of both known macroscopic coordinates
 and learned closure coordinates.
 
-The `Encoder` and `Decoder` objects are used in `onsagernet.dynamics.ReducedSDE`
+The `Encoder` and `Decoder` objects are used in `UIDD.dynamics.ReducedSDE`
 to be used for closure modelling, for example.
 
 ```python
-from onsagernet.transformations import ClosureEncoder, ClosureDecoder
-from onsagernet.dynamics = ReducedSDE, OnsagerNet
+from UIDD.transformations import ClosureEncoder, ClosureDecoder
+from UIDD.dynamics = ReducedSDE, UIDD2
 
 encoder = ClosureEncoder(...)
 decoder = ClosureDecoder(...)
-sde = OnsagerNet(...)
+sde = UIDD2(...)
 
 reduced_sde = ReducedSDE(encoder, decoder, sde)  # can be used to train, predict, etc
 ```
 
-As in `onsagernet.dynamics`, only the model assembly logic is provided here.
+As in `UIDD.dynamics`, only the model assembly logic is provided here.
 Some example implementations of the model architecture are provided
-in the `onsagernet.models` module.
+in the `UIDD.models` module.
 
 """
 

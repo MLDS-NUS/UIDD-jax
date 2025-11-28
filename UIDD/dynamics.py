@@ -1,73 +1,15 @@
 r'''
-# Dynamical models
-
-This module defines the dynamical models used in the OnsagerNet and related architectures.
-Note that the actual model components' architectures are not defined here, but rather it is the
-assembly logic for the model components that is handled here.
-
-The following is an example of how to use the `OnsagerNet` model
-to create the stochastic OnsagerNet dynamics
-
-$$
-    dX(t) = -
-    \left[
-        M(X(t)) + W(x(t))
-    \right] \nabla V(x(t), u(t)) dt
-    + \sqrt{\epsilon} \sigma(x(t), u(t)) dW(t)
-    \qquad
-    X(t) \in \mathbb{R}^d, \quad u(t) \in \mathbb{R}^m.
-$$
-
-```python
-import equinox as eqx
-from onsagernet.dynamics import OnsagerNet
-
-class MyPotential(eqx.Module):
-    """Implement your V function here
-
-    This should be a function (d + m) -> (1)
-    """
-
-class MyDissipation(eqx.Module):
-    """Implement your M function here
-
-    This should be a function (d) -> (d, d)
-    """
-
-class MyConservation(eqx.Module):
-    """Implement your W function here
-
-    This should be a function (d) -> (d, d)
-    """
-
-class MyDiffusion(eqx.Module):
-    """Implement your sigma function here
-
-    This should be a function (d + m) -> (d, d)
-    """
-
-
-potential = MyPotential()
-dissipation = MyDissipation()
-conservation = MyConservation()
-diffusion = MyDiffusion()
-
-sde = OnsagerNet(
-    potential=potential,
-    dissipation=dissipation,
-    conservation=conservation,
-    diffusion=diffusion,
-)
+Dynamical models
 ```
 
 The `sde` instance can then be used to simulate the dynamics
 of the system or perform training.
 
 - Some simple definition of the potential, dissipation, conservation, and diffusion functions are
-  provided in `onsagernet.models`
+  provided in `UIDD.models`
 - The `ReducedSDE` class includes both an `SDE` component and a dimensionality reduction component
-  involving both an `onsagernet.transformations.Encoder` and a `onsagernet.transformations.Decoder`
-- Standard training routines are provided in `onsagernet.trainers`
+  involving both an `UIDD.transformations.Encoder` and a `UIDD.transformations.Decoder`
+- Standard training routines are provided in `UIDD.trainers`
 '''
 
 import jax
@@ -186,8 +128,8 @@ class ReducedSDE(eqx.Module):
         """SDE model with encoder and decoder with dimensionality reduction or closure modelling.
 
         The `sde` attribute can be any model of the [SDE](#SDE) class or its sub-classes.
-        The `encoder` must be a (sub-)class of `onsagernet.transformations.Encoder` and
-        the `decoder` must be a (sub-)class of `onsagernet.transformations.Decoder`.
+        The `encoder` must be a (sub-)class of `UIDD.transformations.Encoder` and
+        the `decoder` must be a (sub-)class of `UIDD.transformations.Decoder`.
 
         Args:
             encoder (Encoder): The encoder function mapping the microscopic state to the reduced state
@@ -200,7 +142,7 @@ class ReducedSDE(eqx.Module):
 
 
 # ------------------------------------------------------------------ #
-#                             OnsagerNet                             #
+#                OnsagerNet for comparasion                          #
 # ------------------------------------------------------------------ #
 
 
@@ -273,7 +215,6 @@ class OnsagerNet(SDE):
         """
         temperature = args[0]
         return jnp.sqrt(temperature) * self.diffusion_func(x, args)
-
 
 # ------------------------------------------------------------------ #
 #        OnsagerNet satifying fluctuation-dissipation relation       #
@@ -388,14 +329,13 @@ class OnsagerNetFD(OnsagerNet):
         M_x = dissipation(x)
         sqrt_M_x = jnp.linalg.cholesky(M_x)
         return jnp.sqrt(2.0 * temperature) * sqrt_M_x
-    
 
 # ------------------------------------------------------------------ #
-#        OnsagerNet based on Helmholtz Decomposition       #
+#                                UIDD                                #
 # ------------------------------------------------------------------ #
 
 
-class OnsagerNetHD(SDE):
+class UIDD1(SDE):
     potential: eqx.Module
     shared: eqx.nn.Shared
     Hamiltonian: eqx.Module
@@ -404,9 +344,8 @@ class OnsagerNetHD(SDE):
     def __init__(
         self, D: int, potential: eqx.Module, dissipation: eqx.Module, Hamiltonian: eqx.Module
     ) -> None:
-        r"""Stochastic OnsagerNet model based on Helmholtz Decomposition.
+        r"""   UIDD.
 
-        This is a modified version of the Stochastic OnsagerNet model.
         Let $Z_t \in \mathbb{R}^d$. This model is defined by the SDE
         $$
         dZ_t = -
@@ -522,7 +461,7 @@ class OnsagerNetHD(SDE):
 
 
 
-class OnsagerNetHD2(SDE):
+class UIDD2(SDE):
     shared: eqx.nn.Shared
     potential: eqx.Module
     Hamiltonian: eqx.Module
@@ -531,9 +470,7 @@ class OnsagerNetHD2(SDE):
     def __init__(
         self, D: int, potential: eqx.Module, diffusion: eqx.Module, Hamiltonian: eqx.Module
     ) -> None:
-        """Second way for Stochastic OnsagerNet model based on Helmholtz Decomposition.
-
-        This is a modified version of the Stochastic OnsagerNet model.
+        """Second way for UIDD. 
         Let $Z_t \in \mathbb{R}^d$. This model is defined by the SDE
         $$
         dZ_t = -

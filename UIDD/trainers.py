@@ -18,12 +18,12 @@ We provide here two training routines.
   comparison loss [`CompareLoss`](./_losses.html#CompareLoss).
   This follows the implementation of [1].
 
-The following example shows how to train an `onsagernet.dynamics.OnsagerNet` model using the `MLETrainer`.
+The following example shows how to train an model using the `MLETrainer`.
 ```python
-from onsagernet.dynamics import OnsagerNet
-from onsagernet.trainers import MLETrainer
+from UIDD.dynamics import UIDD2
+from UIDD.trainers import MLETrainer
 
-sde = OnsagerNet(...)
+sde = UIDD2(...)
 dataset = load_data(...)  # return a datasets.Dataset object
 
 trainer = MLETrainer(opt_options=config.train.opt, rop_options=config.train.rop)
@@ -71,10 +71,6 @@ We always assume that the batch data is a tuple of `(t, x, args)`.
 
 See above for more on the format of the dataset and
 `MLETrainer.loss_func`, or the more complex `ClosureMLETrainer.loss_func` for examples.
-
-## References
-
-1. Chen, X. et al. *Constructing custom thermodynamics using deep learning*. Nature Computational Science **4**, 66–85 (2024).
 
 
 """

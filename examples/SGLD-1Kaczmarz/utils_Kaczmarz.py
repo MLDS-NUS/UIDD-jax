@@ -8,9 +8,9 @@ from omegaconf import DictConfig
 from datasets import Dataset, Features, Array2D, load_from_disk
 
 sys.path.append('../..')
-from onsagernet.dynamics import OnsagerNetHD2 
-from onsagernet.models import DiffusionCholeskyMLP, PotentialResMLP_scaleV2 
-from onsagernet.models import MLP 
+from UIDD.dynamics import UIDD2 
+from UIDD.models import DiffusionCholeskyMLP, PotentialResMLP_scaleV2 
+from UIDD.models import MLP 
 # ------------------------- Typing imports ------------------------- #
 
 
@@ -44,14 +44,14 @@ def load_data(cache_dir: str) -> Dataset:
     return dataset.with_format("jax"), test_dataset.with_format("jax")  
 
 
-def build_OnsagerNetHD2(config: DictConfig, seed:int) -> OnsagerNetHD2:
-    """Build the OnsagerNetHD2 model to learn the target dynamics
+def build_UIDD2(config: DictConfig, seed:int) -> UIDD2:
+    """Build the UIDD2 model to learn the target dynamics
 
     Args:
         config (DictConfig): configuration object
 
     Returns:
-        OnsagerNetHD2: OnsagerNetHD2 model
+        UIDD2: UIDD2 model
     """
 
     init_keys = jax.random.PRNGKey(seed)
@@ -79,7 +79,7 @@ def build_OnsagerNetHD2(config: DictConfig, seed:int) -> OnsagerNetHD2:
         units=config.model.hamiltonian.units + [config.dim-1],
         activation=config.model.hamiltonian.activation,
     ) 
-    return OnsagerNetHD2(config.dim, potential, Diffusion, Hamiltonian)
+    return UIDD2(config.dim, potential, Diffusion, Hamiltonian)
 
 
 

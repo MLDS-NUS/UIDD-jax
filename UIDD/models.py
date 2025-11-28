@@ -1,14 +1,11 @@
 """
-# Custom equinox modules for OnsagerNet components
+# Custom equinox modules
 
-This module contains custom equinox modules for the components of the OnsagerNet model,
+This module contains custom equinox modules for the components,
 which are used in various examples provided in the repository.
 
 For new applications, it is suggested to try the simple models here first
 and then build upon them, adapting if necessary to the specific problem at hand.
-
-
-
 
 
 """
@@ -56,7 +53,7 @@ class MLP(eqx.Module):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
         """
         num_layers = len(units)
         units = [dim] + units
@@ -112,7 +109,7 @@ class PotentialMLP(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             alpha (float): regulariser
             param_dim (int, optional): dimensions of the parameters. Defaults to 0.
         """
@@ -165,7 +162,7 @@ class PotentialResMLP(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             n_pot (int): size of the MLP part of the potential
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
@@ -228,7 +225,7 @@ class PotentialResMLP_scale(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             n_pot (int): size of the MLP part of the potential
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
@@ -292,7 +289,7 @@ class PotentialResMLP_scaleV2(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             n_pot (int): size of the MLP part of the potential
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
@@ -352,7 +349,7 @@ class DissipationMatrixMLP(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             alpha (float): regulariser
             is_bounded (bool, optional): whether to give a element-wise bounded output. Defaults to True.
         """
@@ -402,7 +399,7 @@ class ConservationMatrixMLP(MLP):
         Args:
             key (PRNGKey): random key
             dim (int): dimension of the input
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             units (list[int]): layer sizes
             is_bounded (bool, optional): whether to give a element-wise bounded output. Defaults to True.
         """
@@ -452,7 +449,7 @@ class DiffusionMLP(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
         """
@@ -498,7 +495,7 @@ class DiffusionDiagonalMLP(MLP):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
         """
@@ -614,7 +611,7 @@ class DiffusionCholeskyMLP(eqx.Module):
             key (PRNGKey): random key
             dim (int): dimension of the input
             units (list[int]): layer sizes
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             alpha (float): regulariser
             param_dim (int, optional): dimension of the parameters. Defaults to 0.
         """
@@ -739,7 +736,7 @@ class PCAResNetTransform(PCATransform):
             scaling (ArrayLike): scaling of the PCA transform (e.g. explained variance)
             key (PRNGKey): random key
             units (list[int]): layer sizes of the MLP
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             mlp_scale (float): scale of the MLP output
             mlp_input_scale (float): scale of the input to the MLP
         """
@@ -796,7 +793,7 @@ class InversePCAResNetTransform(InversePCATransform):
             scaling (ArrayLike): scaling of the PCA transform (e.g. explained variance)
             key (PRNGKey): random key
             units (list[int]): layer sizes of the MLP
-            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `_activations`)
             mlp_scale (float): scale of the MLP output
         """
         super().__init__(mean, components, scaling)

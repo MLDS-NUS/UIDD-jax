@@ -12,10 +12,10 @@ from datasets import Dataset, Features, Array2D
 from sklearn.model_selection import train_test_split
 
 sys.path.append('../..')
-from onsagernet.dynamics import OnsagerNet, OnsagerNetHD2
-from onsagernet.models import PotentialResMLP_scale
-from onsagernet.models import MLP
-from onsagernet.models import (
+from UIDD.dynamics import OnsagerNet, UIDD2
+from UIDD.models import PotentialResMLP_scale
+from UIDD.models import MLP
+from UIDD.models import (
     PotentialResMLP,
     DissipationMatrixMLP,
     ConservationMatrixMLP,
@@ -81,14 +81,14 @@ def load_data(dataset_name: str) -> Dataset:
     )
     return dataset.with_format("jax"), test_dataset.with_format("jax")
 
-def build_OnsagerNetHD2_scale(config: DictConfig, scale:float = 1.0) -> OnsagerNetHD2:
-    """Build the OnsagerNetHD2 model to learn the target dynamics
+def build_UIDD2_scale(config: DictConfig, scale:float = 1.0) -> UIDD2:
+    """Build the UIDD2 model to learn the target dynamics
 
     Args:
         config (DictConfig): configuration object
 
     Returns:
-        OnsagerNetHD2: OnsagerNetHD2 model
+        UIDD2: UIDD2 model
     """
 
     init_keys = jax.random.PRNGKey(config.model.seed)
@@ -115,7 +115,7 @@ def build_OnsagerNetHD2_scale(config: DictConfig, scale:float = 1.0) -> OnsagerN
         units=config.model.hamiltonian.units + [config.dim-1],
         activation=config.model.hamiltonian.activation,
     ) 
-    return OnsagerNetHD2(config.dim, potential, Diffusion, Hamiltonian)
+    return UIDD2(config.dim, potential, Diffusion, Hamiltonian)
 
 
 def build_OnsagerNet(config: DictConfig) -> OnsagerNet:

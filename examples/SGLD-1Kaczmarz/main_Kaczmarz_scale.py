@@ -13,8 +13,8 @@ import hydra
 import logging
 from omegaconf import DictConfig
 
-from onsagernet.trainers import MLETrainer
-from utils_Kaczmarz import load_data, build_OnsagerNetHD2, generate_data
+from UIDD.trainers import MLETrainer
+from utils_Kaczmarz import load_data, build_UIDD2, generate_data
  
 from logging import Logger
 
@@ -47,7 +47,7 @@ def train_model(config: DictConfig, logger: Logger= None, lr=0.01, batch_size=1,
     train_dataset, test_dataset = load_data(cache_dir)
 
     logger.info(f"Building HD2 ...") 
-    model = build_OnsagerNetHD2(config, seed=model_seed)
+    model = build_UIDD2(config, seed=model_seed)
     filter_spec = get_filter_spec(model)
     
     trainer = MLETrainer(opt_options=config.train.opt, rop_options=config.train.rop)
