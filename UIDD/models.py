@@ -313,6 +313,60 @@ class PotentialResMLP_scaleV2(MLP):
         output_combined = (output_phi + output_gamma) @ (output_phi + output_gamma)*self.scale
         regularisation = self.alpha * (x @ x)
         return  output_combined + regularisation
+    
+class PotentialMLP_scale(MLP):
+    """Potential network based on a multi-layer perceptron."""
+
+    alpha: float
+    dim: int
+    param_dim: int
+    scale: float
+
+    def __init__(
+        self,
+        key: PRNGKey,
+        dim: int,
+        units: list[int],
+        activation: str,
+        alpha: float,
+        param_dim: int = 0,
+        scale: float = 1.0,
+    ) -> None:
+        r"""Potential network based on a multi-layer perceptron.
+
+        This implements the potential function
+        $$
+            V(x, args) = \alpha \|(x, args)\|^2 + \text{MLP}(x, args)
+        $$
+        where $x$ is the input and $u$ are additional parameters.
+        The constant $\alpha \geq 0$ is a regularisation term,
+        which gives a quadratic growth to ensure that the potential is integrable.
+        We are tacitly assuming that MLP is of sub-quadratic growth,
+        so only choose activation functions that have this property
+        (most activation functions are either bounded or of linear growth).
+
+        Args:
+            key (PRNGKey): random key
+            dim (int): dimension of the input
+            units (list[int]): layer sizes
+            activation (str): activation function (can be any in `jax.nn` or custom ones defined in `onsagernet._activations`)
+            alpha (float): regulariser
+            param_dim (int, optional): dimensions of the parameters. Defaults to 0.
+        """
+        self.dim = dim
+        units = units + [1]
+        self.param_dim = param_dim
+        super().__init__(key, dim + param_dim, units, activation)
+        self.alpha = alpha
+        self.scale = scale
+
+    def __call__(self, x: ArrayLike, args: ArrayLike) -> Array:
+        if self.param_dim > 0:
+            x = jnp.concatenate([x, args[1:]], axis=0)
+        output = super().__call__(x) *self.scale + self.alpha * (x @ x)
+        return jnp.squeeze(output)
+
+
 # ------------------------------------------------------------------ #
 #                        Dissipation networks                        #
 # ------------------------------------------------------------------ #
@@ -545,7 +599,7 @@ class DiffusionDiagonalConstant(eqx.Module):
         sigma_squared_regularised = jnp.sqrt(self.alpha + sigma_diag**2)
         return jnp.diag(sigma_squared_regularised)
 
-from .new_layers import ConstantTensorLayer
+from ._layers import ConstantTensorLayer
 class DiffusionConstant(eqx.Module):
     """Diagonal diffusion matrix network based on a constant tensor layer."""
 
