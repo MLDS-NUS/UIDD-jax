@@ -1,0 +1,88 @@
+# Default config file for the 20D nonlinear case.
+# The target SDE has one double-well coordinate coupled to the other 19
+# coordinates through the potential in nonlinear_case.py.
+
+temperature: 1
+dt: 0.01
+dim: 20 # state dimension
+Model_name: HD2
+data:
+  seed: 123 # random seed
+  init_min: [-2.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5] # lower corner of the initial-condition box
+  init_max: [2.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5] # upper corner of the initial-condition box
+  var: 0.8 # circulation strength kappa
+  t0: 0.0
+  t1: 0.5
+  num_runs: 90000 # number of training trajectories
+  num_runs_test: 10000 # number of test trajectories
+
+model:
+  seed: 0
+  potential:
+    alpha: 0.01 # regularization strength
+    units: # layer sizes
+      - 256
+      - 128
+      - 64
+    activation: "recu"
+    scale: 100 # used by HD2 / PotentialMLP_scale; larger target V in 20D
+    l2_weight: 0.01 # L2 regularization strength only used for OnsagerReg
+    sobolev_weight: 0.0 # Sobolev regularization strength only used for OnsagerReg
+  hamiltonian:
+    # units:
+    #   - 128
+    # activation: "tanh"
+    units:
+      - 256
+      - 128
+      - 64
+    activation: "recu"
+    is_bounded: false
+  dissipation:
+    alpha: 0.1
+    units:
+      - 128
+      - 64
+    activation: "recu"
+    is_bounded: false # whether to have the output bounded (via tanh activation)
+  conservation:
+    units:
+      - 128
+      - 64
+    activation: "recu"
+    is_bounded: false
+  drift:
+    units:
+      - 512
+      - 512
+    activation: "tanh"
+  diffusion:
+    alpha: 0.1
+    units:
+      - 128
+      - 64
+    activation: "recu"
+  
+
+train:
+  num_epochs: 600
+  batch_size: 100000 # tuned for one 40GB+ GPU process; each batch is [batch_size, train_traj_len, dim]
+  train_traj_len: 2 # can shrink the length of the training trajectories for better GPU performance
+  checkpoint_every: 500 # number of epochs to check-point the model
+  print_every: 100 # number of epochs to print the loss
+  opt: # optimiser options
+    learning_rate: 5e-4
+  rop: # reduce on plateau options
+    patience: 30
+    cooldown: 30
+    factor: 0.4
+    rtol: 1e-4
+    min_scale: 1e-5
+    accumulation_size: 2000
+
+hydra:
+  run:
+    dir: ./outputs/20Dnonlinear${model.seed}_${Model_name}_dt${dt}
+  sweep:
+    dir: ./outputs/multirun/${now:%Y_%m_%d-%H_%M_%S}
+    subdir: ${hydra.job.num}

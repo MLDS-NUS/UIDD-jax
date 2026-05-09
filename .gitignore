@@ -1,0 +1,13 @@
+
+UIDD/__pycache__/
+.vscode/
+examples/*/outputs/
+examples/*/__pycache__/
+examples/*/running_log/
+outputs/
+
+examples/*/outputs_old/
+examples/*/running_log_old/
+
+examples/Burgers
+examples/Burgers_new

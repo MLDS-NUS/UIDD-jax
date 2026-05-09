@@ -125,6 +125,15 @@ class SDETrainer(ABC):
         self._rop_options = rop_options
         self._loss_options = loss_options
 
+    def _trainable_filter_spec(self, model: DynamicModel, filter_spec: Any) -> Any:
+        """Restrict training to leaves that are both selected and differentiable arrays."""
+        return tree_map(
+            lambda leaf, keep: bool(keep) and eqx.is_inexact_array(leaf),
+            model,
+            filter_spec,
+            is_leaf=lambda x: x is None,
+        )
+
     @eqx.filter_jit
     @abstractmethod
     def loss_func(
@@ -186,12 +195,15 @@ class SDETrainer(ABC):
         Returns:
             tuple[DynamicModel, OptState, float]: trained model, optimiser state, loss value
         """
-        diff_model, static_model = eqx.partition(model, filter_spec)
+        trainable_filter_spec = self._trainable_filter_spec(model, filter_spec)
+        diff_model, static_model = eqx.partition(model, trainable_filter_spec)
 
         loss_value, grads = eqx.filter_value_and_grad(self.loss_func)(
             diff_model, static_model, *data
         )
-        updates, opt_state = opt.update(grads, opt_state, model, value=loss_value)
+        updates, opt_state = opt.update(
+            grads, opt_state, diff_model, value=loss_value
+        )
         model = eqx.apply_updates(model, updates)
         return model, loss_value, opt_state
 
@@ -265,11 +277,14 @@ class SDETrainer(ABC):
             tuple[DynamicModel, list[float], OptState]: trained model, list of losses, optimiser state
         """
         opt = self._make_optimiser(self._opt_options, self._rop_options)
-        if opt_state is None:
-            opt_state = opt.init(eqx.filter(model, eqx.is_array))
 
         if filter_spec is None:
             filter_spec = tree_map(lambda _: True, model)
+
+        trainable_filter_spec = self._trainable_filter_spec(model, filter_spec)
+
+        if opt_state is None:
+            opt_state = opt.init(eqx.filter(model, trainable_filter_spec))
 
         losses = []
         test_losses=[]
