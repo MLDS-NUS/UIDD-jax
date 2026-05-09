@@ -12,7 +12,7 @@ This repository contains an implementation of UIDD, a deep learning framework fo
 
 or just copy our environment using conda:
 ```
-conda env create -f environment.yml
+conda env create -f UIDD_environment.yml
 ```
 
 ## Key Features
